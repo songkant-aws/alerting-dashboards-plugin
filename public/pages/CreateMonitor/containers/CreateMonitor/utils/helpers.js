@@ -44,7 +44,7 @@ export const getInitialValues = ({
     initialValues.index = index;
     initialValues.timeField = timeField;
 
-    // Add trigger
+    // Add default trigger
     const monitorType = initialValues.monitor_type;
     const initialTrigger = getInitialTriggerValues({ flyoutMode, monitorType, triggers: [] });
     initialValues.triggerDefinitions = [initialTrigger];
@@ -60,6 +60,33 @@ export const getInitialValues = ({
       initialValues.detectorId = detectorId;
       initialValues.period = { interval: 20, unit: 'MINUTES' };
     }
+  }
+
+  if (initialValues.trigger_name) {
+    // Add trigger
+    const monitorType = initialValues.monitor_type;
+    const defaultInitialTrigger = getInitialTriggerValues({
+      flyoutMode,
+      monitorType,
+      triggers: [
+        {
+          name: initialValues.trigger_name,
+          severity: initialValues.trigger_severity,
+          thresholdEnum: initialValues.thresholdEnum,
+          thresholdValue: initialValues.thresholdValue,
+        },
+      ],
+    });
+    initialValues.triggerDefinitions = [defaultInitialTrigger];
+  }
+
+  if (initialValues.aggregationType && initialValues.aggregationField) {
+    initialValues.aggregations = [
+      {
+        aggregationType: initialValues.aggregationType,
+        fieldName: initialValues.aggregationField,
+      },
+    ];
   }
 
   if (edit && monitorToEdit) {

@@ -30,6 +30,20 @@ export const getInitialTriggerValues = ({
     initialValues.name = getUniqueName(triggers, 'Trigger ');
     const initialAction = getInitialActionValues({ monitorType, flyoutMode, actions: [] });
     initialValues.actions = [initialAction];
+  } else if (triggers.length) {
+    const id = getDigitId();
+
+    initialValues.id = `trigger${id}`;
+    initialValues.name = getUniqueName(triggers, `${triggers[0].name} `);
+    if (triggers[0].severity) {
+      initialValues.severity = triggers[0].severity;
+    }
+    if (triggers[0].thresholdEnum) {
+      initialValues.thresholdEnum = triggers[0].thresholdEnum;
+    }
+    if (triggers[0].thresholdValue) {
+      initialValues.thresholdValue = triggers[0].thresholdValue;
+    }
   }
 
   return initialValues;
